@@ -2,10 +2,12 @@ import React from "react";
 import "./home.scss";
 import Featured from "../../components/featured/Featured";
 import TrustedBy from "../../components/trustedBy/TrustedBy";
-import { cards } from "../../data";
+import { cards, projects } from "../../data";
+
 import CatCard from "../../components/catCard/CatCard";
 import Slide from "../../components/slide/Slide";
 import Check from "/img/check.png";
+import ProjectCard from "../../components/projectCard/ProjectCard";
 const Home = () => {
   return (
     <div className="home">
@@ -183,6 +185,11 @@ const Home = () => {
           </div>
         </div>
       </div>
+      <Slide slidesToShow={5} slidesToScroll={5} dots={true}>
+        {projects.map((card) => (
+          <ProjectCard key={card.id} card={card} />
+        ))}
+      </Slide>
     </div>
   );
 };
