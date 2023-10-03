@@ -2,10 +2,15 @@ import React, { useRef, useState } from "react";
 import "./gigs.scss";
 import { gigs } from "../../data";
 import GigCard from "../../components/gigCard/GigCard";
+import { useQuery } from "@tanstack/react-query";
+import newRequest from "../../utils/newRequest";
+import { useLocation } from "react-router-dom";
 
 function Gigs() {
   const [sort, setSort] = useState("sales");
   const [open, setOpen] = useState(false);
+  const { search } = useLocation();
+
   const minRef = useRef();
   const maxRef = useRef();
 
@@ -19,6 +24,14 @@ function Gigs() {
     console.log(maxRef.current.value);
   };
 
+  const { isLoading, error, data } = useQuery({
+    queryKey: ["myGigs"],
+    queryFn: () =>
+      newRequest.get("/gigs").then((res) => {
+        return res.data;
+      }),
+  });
+  console.log(data);
   return (
     <div className="gigs">
       <div className="container">
@@ -53,9 +66,11 @@ function Gigs() {
           </div>
         </div>
         <div className="cards">
-          {gigs.map((gig) => (
-            <GigCard key={gig.id} item={gig} />
-          ))}
+          {isLoading
+            ? "loading..."
+            : error
+            ? "Something went wrong"
+            : data.map((gig) => <GigCard key={gig._id} item={gig} />)}
         </div>
       </div>
     </div>
