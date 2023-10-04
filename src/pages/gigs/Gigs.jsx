@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./gigs.scss";
 import { gigs } from "../../data";
 import GigCard from "../../components/gigCard/GigCard";
@@ -14,24 +14,29 @@ function Gigs() {
   const minRef = useRef();
   const maxRef = useRef();
 
+  const { isLoading, error, data, refetch } = useQuery({
+    queryKey: ["myGigs"],
+    queryFn: () =>
+      newRequest
+        .get(
+          `/gigs${search}&min=${minRef.current.value}&max=${maxRef.current.value}&sort=${sort}`
+        )
+        .then((res) => {
+          return res.data;
+        }),
+  });
   const reSort = (type) => {
     setSort(type);
     setOpen(false);
   };
 
   const apply = () => {
-    console.log(minRef.current.value);
-    console.log(maxRef.current.value);
+    refetch();
   };
 
-  const { isLoading, error, data } = useQuery({
-    queryKey: ["myGigs"],
-    queryFn: () =>
-      newRequest.get("/gigs").then((res) => {
-        return res.data;
-      }),
-  });
-  console.log(data);
+  useEffect(() => {
+    refetch;
+  }, [sort]);
   return (
     <div className="gigs">
       <div className="container">
