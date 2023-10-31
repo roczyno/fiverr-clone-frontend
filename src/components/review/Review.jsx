@@ -26,10 +26,6 @@ const Review = ({ review }) => {
           <div className="info">
             <span>{data.username}</span>
             <div className="country">
-              <img
-                src="https://fiverr-dev-res.cloudinary.com/general_assets/flags/1f1fa-1f1f8.png"
-                alt=""
-              />
               <span>Ghana</span>
             </div>
           </div>
@@ -46,11 +42,11 @@ const Review = ({ review }) => {
       </div>
       <p>{review.desc}</p>
       <div className="helpful">
-        <span>Helpful?</span>
+        {/* <span>Helpful?</span>
         <img src="/img/like.png" alt="" />
         <span>Yes</span>
         <img src="/img/dislike.png" alt="" />
-        <span>No</span>
+        <span>No</span> */}
       </div>
     </div>
   );

@@ -1,10 +1,12 @@
 import React from "react";
 import "./reviews.scss";
 import Review from "../review/Review";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import newRequest from "../../utils/newRequest";
 
 const Reviews = ({ gigId }) => {
+  const queryClient = useQueryClient();
+
   const { isLoading, error, data } = useQuery({
     queryKey: ["reviews"],
     queryFn: () =>
@@ -13,11 +15,24 @@ const Reviews = ({ gigId }) => {
       }),
   });
 
+  const mutation = useMutation({
+    mutationFn: (review) => {
+      return newRequest.post("/review", review);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["reviews"]);
+    },
+  });
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const desc = e.target[0].value;
+    const star = e.target[1].value;
+    mutation.mutate({ gigId, desc, star });
     try {
     } catch (error) {}
   };
+
   return (
     <div className="reviews">
       <h2>Reviews</h2>

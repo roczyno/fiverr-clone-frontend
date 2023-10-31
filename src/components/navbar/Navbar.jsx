@@ -25,7 +25,7 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     try {
-      await newRequest.post("/auth/logout");
+      await newRequest.post("auth/logout");
       localStorage.setItem("currentUser", null);
       navigate("/");
     } catch (error) {
@@ -46,9 +46,12 @@ const Navbar = () => {
           <span>Fiverr Business</span>
           <span>Explore</span>
           <span>English</span>
-          <Link to="/login" className="link">
-            <span style={{ cursor: "pointer" }}>Sign in</span>
-          </Link>
+
+          {!currentUser && (
+            <Link to="/login" className="link">
+              <span style={{ cursor: "pointer" }}>Sign in</span>
+            </Link>
+          )}
           {!currentUser?.isSeller && <span>Become a Seller</span>}
           {!currentUser && (
             <Link to="/register" className="link">

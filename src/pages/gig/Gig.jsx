@@ -16,6 +16,8 @@ function Gig() {
       }),
   });
 
+  const userId = data?.userId;
+
   const {
     isLoading: isLoadingUser,
     error: errorUser,
@@ -26,6 +28,7 @@ function Gig() {
       newRequest.get(`/user/${data.userId}`).then((res) => {
         return res.data;
       }),
+    enabled: !!userId,
   });
 
   return (
